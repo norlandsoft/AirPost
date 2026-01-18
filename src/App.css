@@ -1,1 +1,32 @@
 /* App specific styles */
+
+/* macOS 窗口拖拽支持 */
+.draggable {
+  -webkit-app-region: drag;
+  user-select: none; /* 防止拖拽时选中文本 */
+}
+
+.no-drag {
+  -webkit-app-region: no-drag;
+}
+
+/* 布局样式 */
+.ant-layout-sider {
+  overflow: hidden;
+}
+
+.ant-tree-node-selected {
+  background-color: #e6f7ff !important;
+}
+
+/* 请求区域样式 */
+.request-form {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.request-tabs {
+  flex: 1;
+  overflow: auto;
+}
