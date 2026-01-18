@@ -4,10 +4,8 @@
   "description": "一个跨平台的Electron应用",
   "main": "dist-electron/main.js",
   "type": "module",
-  "packageManager": "pnpm@latest",
   "engines": {
-    "node": ">=18.12.0",
-    "pnpm": ">=9.0.0"
+    "node": ">=18.12.0"
   },
   "scripts": {
     "dev": "tsc -p electron/tsconfig.json && concurrently \"vite\" \"tsc -p electron/tsconfig.json --watch\" \"wait-on http://localhost:5173 && electron .\"",

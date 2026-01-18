@@ -10,7 +10,7 @@
 - **Ant Design** - 企业级 UI 组件库
 - **Vite** - 快速的前端构建工具
 - **better-sqlite3** - 高性能 SQLite 数据库
-- **pnpm** - 快速、节省磁盘空间的包管理器
+- **npm** - Node.js 包管理器
 
 ## 功能特性
 
@@ -45,16 +45,10 @@ AirPost/
 
 ## 安装依赖
 
-使用 pnpm 安装依赖：
+使用 npm 安装依赖：
 
 ```bash
-pnpm install
-```
-
-如果没有安装 pnpm，可以使用以下命令安装：
-
-```bash
-npm install -g pnpm
+npm install
 ```
 
 ### 国内镜像源配置
@@ -71,10 +65,10 @@ npm install -g pnpm
 
 ```bash
 # 设置 npm 镜像
-pnpm config set registry https://registry.npmmirror.com
+npm config set registry https://registry.npmmirror.com
 
 # 设置 Electron 镜像
-pnpm config set electron_mirror https://npmmirror.com/mirrors/electron/
+npm config set electron_mirror https://npmmirror.com/mirrors/electron/
 ```
 
 ## 开发模式
@@ -82,7 +76,7 @@ pnpm config set electron_mirror https://npmmirror.com/mirrors/electron/
 启动开发服务器（自动打开 Electron 窗口）：
 
 ```bash
-pnpm dev
+npm run dev
 ```
 
 开发模式会：
@@ -99,20 +93,20 @@ pnpm dev
 ### 构建所有平台
 
 ```bash
-pnpm build
+npm run build
 ```
 
 ### 构建特定平台
 
 ```bash
 # Windows
-pnpm build:win
+npm run build:win
 
 # macOS
-pnpm build:mac
+npm run build:mac
 
 # Linux
-pnpm build:linux
+npm run build:linux
 ```
 
 构建输出将保存在 `dist/` 目录中。
@@ -162,27 +156,20 @@ pnpm build:linux
 ## 系统要求
 
 - **Node.js** 18.12 或更高版本（推荐 20.x）
-- **pnpm** 9.0 或更高版本（推荐最新版本）
+- **npm** 9.0 或更高版本（通常随 Node.js 一起安装）
 
-### 升级 pnpm 到最新版本
+### 升级 npm 到最新版本
 
-项目已配置使用最新版本的 pnpm。如果当前版本较旧，可以使用以下命令升级：
+如果当前 npm 版本较旧，可以使用以下命令升级：
 
 ```bash
-# 使用 Corepack（推荐）
-corepack enable
-corepack use pnpm@latest
-
-# 或使用 npm
-npm install -g pnpm@latest
-
-# 或使用 pnpm 自升级
-pnpm self-update
+# 使用 npm 自升级
+npm install -g npm@latest
 ```
 
 验证版本：
 ```bash
-pnpm -v
+npm -v
 ```
 
 ## 常见问题
