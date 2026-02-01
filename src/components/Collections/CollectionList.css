@@ -1,0 +1,17 @@
+.collection-list {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.collection-list-header {
+  padding: 8px 12px;
+  border-bottom: 1px solid #f0f0f0;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.collection-list-content {
+  flex: 1;
+  overflow: auto;
+}

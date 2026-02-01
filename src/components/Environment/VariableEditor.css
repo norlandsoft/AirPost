@@ -1,0 +1,10 @@
+.variable-editor {
+  padding: 16px 0;
+}
+
+.variable-editor-header {
+  margin-bottom: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}

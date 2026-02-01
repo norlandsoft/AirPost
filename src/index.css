@@ -1,18 +1,188 @@
-* {
+/* ===========================================
+   AirPost Index - Clean Base Styles
+   =========================================== */
+
+/* Global reset */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
+}
+
+/* HTML and Body */
+html {
+  font-size: 14px;
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html, body, #root {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: var(--font-family-sans, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif);
+  font-size: 14px;
+  line-height: 1.5;
+  color: #262626;
+  background-color: #ffffff;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
-#root {
+/* Selection */
+::selection {
+  background: #bae0ff;
+  color: #003eb3;
+}
+
+/* Focus outline */
+:focus {
+  outline: none;
+}
+
+:focus-visible {
+  outline: 2px solid #1677ff;
+  outline-offset: 2px;
+}
+
+/* Links */
+a {
+  color: #1677ff;
+  text-decoration: none;
+  background-color: transparent;
+  transition: color 0.2s ease;
+}
+
+a:hover {
+  color: #4096ff;
+}
+
+a:active {
+  color: #0958d9;
+}
+
+/* Images */
+img {
+  max-width: 100%;
+  height: auto;
+  vertical-align: middle;
+}
+
+/* Form elements */
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  line-height: inherit;
+}
+
+/* Buttons */
+button {
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* Lists */
+ul, ol {
+  list-style: none;
+}
+
+/* Headings */
+h1, h2, h3, h4, h5, h6 {
+  margin-top: 0;
+  margin-bottom: 0.5em;
+  font-weight: 600;
+  line-height: 1.23;
+  color: inherit;
+}
+
+p {
+  margin-top: 0;
+  margin-bottom: 1em;
+}
+
+/* Code */
+code,
+kbd,
+pre,
+samp {
+  font-family: var(--font-family-mono, 'SF Mono', 'Fira Code', 'Monaco', 'Consolas', monospace);
+}
+
+/* Tables */
+table {
+  border-collapse: collapse;
   width: 100%;
-  height: 100vh;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #d9d9d9;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #bfbfbf;
+}
+
+/* Dark theme scrollbar */
+[data-theme="dark"] ::-webkit-scrollbar-thumb {
+  background: #434343;
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* Custom properties for transitions */
+:root {
+  --transition-duration-fast: 150ms;
+  --transition-duration-normal: 250ms;
+  --transition-duration-slow: 350ms;
+}
+
+/* Reduce motion preference */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Dark theme adjustments */
+[data-theme="dark"] body {
+  color: #f0f0f0;
+  background-color: #141414;
+}
+
+[data-theme="dark"] ::selection {
+  background: rgba(22, 119, 255, 0.3);
+  color: #bae0ff;
 }

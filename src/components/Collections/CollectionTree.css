@@ -1,0 +1,244 @@
+.collection-tree {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Tree Container */
+.collection-tree .ant-tree {
+  padding: var(--space-2);
+  background: transparent;
+}
+
+/* Tree Node Base Styles */
+.collection-tree .ant-tree-treenode {
+  width: 100%;
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--space-1);
+  transition: all var(--transition-fast);
+  cursor: pointer;
+  position: relative;
+}
+
+.collection-tree .ant-tree-treenode::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 100%;
+  background: transparent;
+  border-radius: var(--radius-md);
+  transition: background var(--transition-fast);
+  z-index: -1;
+}
+
+.collection-tree .ant-tree-treenode:hover::before {
+  background: var(--color-bg-hover);
+}
+
+.collection-tree .ant-tree-treenode-selected::before {
+  background: var(--color-primary-100);
+}
+
+.collection-tree .ant-tree-treenode-selected:hover::before {
+  background: var(--color-primary-200);
+}
+
+/*深色主题适配 */
+[data-theme='dark'] .collection-tree .ant-tree-treenode:hover::before {
+  background: var(--color-bg-hover);
+}
+
+[data-theme='dark'] .collection-tree .ant-tree-treenode-selected::before {
+  background: rgba(22, 119, 255, 0.2);
+}
+
+[data-theme='dark'] .collection-tree .ant-tree-treenode-selected:hover::before {
+  background: rgba(22, 119, 255, 0.3);
+}
+
+/* Node Content Wrapper */
+.collection-tree .ant-tree-node-content-wrapper {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  padding: var(--space-1) 0;
+  border-radius: var(--radius-sm);
+  transition: all var(--transition-fast);
+}
+
+.collection-tree .ant-tree-node-content-wrapper:hover {
+  background: transparent;
+}
+
+.collection-tree .ant-tree-node-content-wrapper.ant-tree-node-selected {
+  background: transparent !important;
+}
+
+/* Node Icons */
+.collection-tree .ant-tree-icon__svg {
+  width: 16px;
+  height: 16px;
+  margin-right: var(--space-2);
+  opacity: 0.8;
+  transition: opacity var(--transition-fast);
+}
+
+.collection-tree .ant-tree-treenode:hover .ant-tree-icon__svg {
+  opacity: 1;
+}
+
+/* Request Method Badge */
+.collection-tree .request-method {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 50px;
+  padding: 2px var(--space-2);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  margin-right: var(--space-2);
+  text-transform: uppercase;
+}
+
+.collection-tree .request-method.get { color: #61affe; background: rgba(97, 175, 254, 0.15); }
+.collection-tree .request-method.post { color: #49cc90; background: rgba(73, 204, 144, 0.15); }
+.collection-tree .request-method.put { color: #fca130; background: rgba(252, 161, 48, 0.15); }
+.collection-tree .request-method.delete { color: #f93e3e; background: rgba(249, 62, 62, 0.15); }
+.collection-tree .request-method.patch { color: #50e3c2; background: rgba(80, 227, 194, 0.15); }
+.collection-tree .request-method.head { color: #9012fe; background: rgba(144, 18, 254, 0.15); }
+.collection-tree .request-method.options { color: #0d5aa7; background: rgba(13, 90, 167, 0.15); }
+
+/*深色主题适配 */
+[data-theme='dark'] .collection-tree .request-method.get { background: rgba(97, 175, 254, 0.25); }
+[data-theme='dark'] .collection-tree .request-method.post { background: rgba(73, 204, 144, 0.25); }
+[data-theme='dark'] .collection-tree .request-method.put { background: rgba(252, 161, 48, 0.25); }
+[data-theme='dark'] .collection-tree .request-method.delete { background: rgba(249, 62, 62, 0.25); }
+[data-theme='dark'] .collection-tree .request-method.patch { background: rgba(80, 227, 194, 0.25); }
+[data-theme='dark'] .collection-tree .request-method.head { background: rgba(144, 18, 254, 0.25); }
+[data-theme='dark'] .collection-tree .request-method.options { background: rgba(13, 90, 167, 0.25); }
+
+/* Drag & Drop Styles */
+.collection-tree .ant-tree-node-content-wrapper-draggable {
+  cursor: grab;
+}
+
+.collection-tree .ant-tree-node-content-wrapper-draggable:hover {
+  background: transparent;
+}
+
+.collection-tree .ant-tree-node-dragging {
+  opacity: 0.7;
+}
+
+.collection-tree .ant-tree-node-dragging::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: var(--space-2);
+  right: var(--space-2);
+  height: 2px;
+  background: var(--color-primary-500);
+  border-radius: var(--radius-full);
+  transform: translateY(-50%);
+  opacity: 0;
+  animation: dragLineFadeIn var(--transition-fast) forwards;
+}
+
+@keyframes dragLineFadeIn {
+  to { opacity: 1; }
+}
+
+/* Drop Target Highlight */
+.collection-tree .ant-tree-treenode.drop-target {
+  background: var(--color-primary-50);
+  border: 2px dashed var(--color-primary-500);
+}
+
+[data-theme='dark'] .collection-tree .ant-tree-treenode.drop-target {
+  background: rgba(22, 119, 255, 0.1);
+  border-color: var(--color-primary-500);
+}
+
+/* Switcher Arrow */
+.collection-tree .ant-tree-switcher {
+  width: 20px;
+  height: 20px;
+  line-height: 20px;
+  border-radius: var(--radius-sm);
+  transition: all var(--transition-fast);
+}
+
+.collection-tree .ant-tree-switcher:hover {
+  background: var(--color-bg-hover);
+}
+
+/* Empty State */
+.collection-tree .ant-empty {
+  padding: var(--space-8) var(--space-4);
+}
+
+.collection-tree .ant-empty-description {
+  color: var(--color-text-tertiary);
+  font-size: var(--font-size-sm);
+}
+
+/* Animation for node expansion */
+.collection-tree .ant-tree-child-tree {
+  transition: all var(--transition-normal);
+}
+
+.collection-tree .ant-tree-child-tree-enter,
+.collection-tree .ant-tree-child-tree-appear {
+  opacity: 0;
+  transform: translateY(-10px);
+}
+
+.collection-tree .ant-tree-child-tree-enter-active,
+.collection-tree .ant-tree-child-tree-appear-active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.collection-tree .ant-tree-child-tree-exit {
+  opacity: 1;
+}
+
+.collection-tree .ant-tree-child-tree-exit-active {
+  opacity: 0;
+  max-height: 0;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .collection-tree .ant-tree-treenode {
+    padding: var(--space-1);
+  }
+  
+  .collection-tree .request-method {
+    min-width: 40px;
+    padding: 1px var(--space-1);
+    font-size: 10px;
+  }
+}
+
+/* Scrollbar Styling */
+.collection-tree::-webkit-scrollbar {
+  width: 6px;
+}
+
+.collection-tree::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.collection-tree::-webkit-scrollbar-thumb {
+  background: var(--color-border-default);
+  border-radius: var(--radius-full);
+}
+
+.collection-tree::-webkit-scrollbar-thumb:hover {
+  background: var(--color-border-dark);
+}

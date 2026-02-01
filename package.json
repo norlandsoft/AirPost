@@ -10,11 +10,11 @@
   "scripts": {
     "postbuild:electron": "node scripts/rename-electron-files.cjs",
     "watch:electron": "node scripts/watch-electron-files.cjs",
-    "dev": "tsc -p electron/tsconfig.json && npm run postbuild:electron && concurrently \"vite\" \"npm run watch:electron\" \"tsc -p electron/tsconfig.json --watch\" \"wait-on http://localhost:5173 && NODE_ENV=development electron .\"",
-    "build": "tsc && vite build && tsc -p electron/tsconfig.json && npm run postbuild:electron && electron-builder",
-    "build:win": "tsc && vite build && tsc -p electron/tsconfig.json && npm run postbuild:electron && electron-builder --win",
-    "build:mac": "tsc && vite build && tsc -p electron/tsconfig.json && npm run postbuild:electron && electron-builder --mac",
-    "build:linux": "tsc && vite build && tsc -p electron/tsconfig.json && npm run postbuild:electron && electron-builder --linux",
+    "dev": "tsc -p electron/tsconfig.json && pnpm run postbuild:electron && concurrently \"vite\" \"pnpm run watch:electron\" \"tsc -p electron/tsconfig.json --watch\" \"wait-on http://localhost:5173 && NODE_ENV=development electron .\"",
+    "build": "tsc && vite build && tsc -p electron/tsconfig.json && pnpm run postbuild:electron && electron-builder",
+    "build:win": "tsc && vite build && tsc -p electron/tsconfig.json && pnpm run postbuild:electron && electron-builder --win",
+    "build:mac": "tsc && vite build && tsc -p electron/tsconfig.json && pnpm run postbuild:electron && electron-builder --mac",
+    "build:linux": "tsc && vite build && tsc -p electron/tsconfig.json && pnpm run postbuild:electron && electron-builder --linux",
     "generate-icons": "bash scripts/generate-icons.sh",
     "preview": "vite preview"
   },
@@ -28,9 +28,14 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "@ant-design/icons": "^6.1.0",
     "antd": "^5.12.8",
+    "axios": "^1.6.2",
+    "dayjs": "^1.11.19",
+    "highlight.js": "^11.9.0",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-json-view": "^1.21.3"
   },
   "devDependencies": {
     "@types/node": "^20.10.6",

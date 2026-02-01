@@ -1,9 +1,14 @@
-/* App specific styles */
+/* ===========================================
+   AirPost App - Modern Global Styles
+   =========================================== */
+
+/* Import Inter font for modern typography */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
 /* macOS 窗口拖拽支持 */
 .draggable {
   -webkit-app-region: drag;
-  user-select: none; /* 防止拖拽时选中文本 */
+  user-select: none;
 }
 
 .no-drag {
@@ -11,22 +16,370 @@
 }
 
 /* 布局样式 */
-.ant-layout-sider {
+.ant-layout {
+  height: 100vh;
   overflow: hidden;
 }
 
-.ant-tree-node-selected {
-  background-color: #e6f7ff !important;
+.ant-layout-sider {
+  overflow: hidden;
+  flex: 0 0 var(--sidebar-width) !important;
+  max-width: var(--sidebar-width) !important;
+  min-width: var(--sidebar-width) !important;
+  width: var(--sidebar-width) !important;
 }
 
-/* 请求区域样式 */
-.request-form {
+.ant-layout-content {
+  overflow: hidden;
+  flex: 1;
+}
+
+/* Tree 节点样式 - Modern hover effects */
+.ant-tree-node-content-wrapper {
+  transition: all var(--transition-fast);
+}
+
+.ant-tree-node-content-wrapper:hover {
+  background-color: transparent;
+}
+
+.ant-tree-treenode:hover .ant-tree-node-content-wrapper {
+  background-color: var(--color-bg-hover);
+}
+
+[data-theme='dark'] .ant-tree-node-content-wrapper:hover {
+  background-color: transparent;
+}
+
+[data-theme='dark'] .ant-tree-treenode:hover .ant-tree-node-content-wrapper {
+  background-color: var(--color-bg-hover);
+}
+
+/* Collection 列表样式 */
+.collection-list {
   height: 100%;
   display: flex;
   flex-direction: column;
 }
 
-.request-tabs {
+.collection-list-header {
+  padding: var(--space-3);
+  border-bottom: 1px solid var(--color-border-light);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.collection-list-content {
   flex: 1;
   overflow: auto;
+}
+
+/* 历史记录样式 */
+.history-list {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.history-search {
+  padding: var(--space-3);
+}
+
+.history-actions {
+  padding: var(--space-2) var(--space-3);
+  border-bottom: 1px solid var(--color-border-light);
+}
+
+.history-content {
+  flex: 1;
+  overflow: auto;
+}
+
+/* 环境变量样式 */
+.environment-panel {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.environment-header {
+  padding: var(--space-3);
+  border-bottom: 1px solid var(--color-border-light);
+}
+
+.environment-content {
+  flex: 1;
+  overflow: auto;
+  padding: var(--space-2);
+}
+
+/* 按钮样式 - Modern hover effects */
+.ant-btn-text:hover {
+  background-color: var(--color-bg-hover);
+  color: var(--color-primary-600);
+}
+
+[data-theme='dark'] .ant-btn-text:hover {
+  background-color: var(--color-bg-active);
+  color: var(--color-primary-400);
+}
+
+/* Select dropdown arrow */
+.ant-select-arrow {
+  transition: transform var(--transition-fast);
+}
+
+.ant-select-open .ant-select-arrow {
+  transform: rotate(180deg);
+}
+
+/* Badge styling - Modern dots */
+.ant-badge-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: var(--radius-full);
+}
+
+/* Input addon styling */
+.ant-input-group-addon {
+  background: var(--color-bg-secondary);
+  border-color: var(--color-border-light);
+  color: var(--color-text-secondary);
+}
+
+[data-theme="dark"] .ant-input-group-addon {
+  background: var(--color-bg-tertiary);
+  border-color: var(--color-border-light);
+}
+
+/* Progress bar styling */
+.ant-progress-bg {
+  border-radius: var(--radius-full);
+  transition: width var(--transition-normal);
+}
+
+/* Switch styling */
+.ant-switch {
+  border-radius: var(--radius-full);
+  transition: all var(--transition-fast);
+}
+
+.ant-switch::after {
+  border-radius: var(--radius-full);
+  transition: all var(--transition-fast);
+}
+
+/* Checkbox styling */
+.ant-checkbox-checked .ant-checkbox-inner {
+  background-color: var(--color-primary-500);
+  border-color: var(--color-primary-500);
+}
+
+/* Radio button styling */
+.ant-radio-checked .ant-radio-inner {
+  border-color: var(--color-primary-500);
+}
+
+.ant-radio-checked .ant-radio-inner::after {
+  background-color: var(--color-primary-500);
+}
+
+/* Date picker styling */
+.ant-picker-dropdown {
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-xl);
+}
+
+.ant-picker-cell-selected .ant-picker-cell-inner {
+  background: var(--color-primary-500) !important;
+  border-radius: var(--radius-md);
+}
+
+/* Slider styling */
+.ant-slider-rail {
+  background-color: var(--color-bg-tertiary);
+  border-radius: var(--radius-full);
+}
+
+.ant-slider-track {
+  background-color: var(--color-primary-500);
+  border-radius: var(--radius-full);
+}
+
+.ant-slider-handle {
+  border-color: var(--color-primary-500);
+  transition: all var(--transition-fast);
+}
+
+.ant-slider-handle:hover,
+.ant-slider-handle:focus {
+  border-color: var(--color-primary-400);
+  transform: scale(1.1);
+}
+
+/* Upload styling */
+.ant-upload-drag {
+  border-color: var(--color-border-default);
+  border-radius: var(--radius-lg);
+  transition: all var(--transition-fast);
+}
+
+.ant-upload-drag:hover {
+  border-color: var(--color-primary-400);
+  background: var(--color-primary-50);
+}
+
+[data-theme="dark"] .ant-upload-drag:hover {
+  background: rgba(37, 99, 235, 0.1);
+}
+
+/* Collapse styling */
+.ant-collapse {
+  background: transparent;
+  border: none;
+}
+
+.ant-collapse-item {
+  border: 1px solid var(--color-border-light) !important;
+  border-radius: var(--radius-lg) !important;
+  margin-bottom: var(--space-2);
+  overflow: hidden;
+}
+
+.ant-collapse-header {
+  font-weight: var(--font-weight-medium) !important;
+}
+
+.ant-collapse-content {
+  border-top: 1px solid var(--color-border-light);
+}
+
+/* Divider styling */
+.ant-divider {
+  border-color: var(--color-border-light);
+}
+
+.ant-divider-horizontal.ant-divider-with-text::before,
+.ant-divider-horizontal.ant-divider-with-text::after {
+  border-color: var(--color-border-light);
+}
+
+/* Page header styling */
+.ant-page-header {
+  padding: var(--space-4);
+  border-bottom: 1px solid var(--color-border-light);
+  background: var(--color-bg-secondary);
+}
+
+/* Breadcrumb styling */
+.ant-breadcrumb {
+  font-size: var(--font-size-sm);
+}
+
+/* Result component */
+.ant-result-title {
+  font-weight: var(--font-weight-semibold);
+}
+
+.ant-result-subtitle {
+  color: var(--color-text-tertiary);
+}
+
+/* Skeleton styling */
+.ant-skeleton-content .ant-skeleton-title {
+  border-radius: var(--radius-md);
+}
+
+.ant-skeleton-content .ant-skeleton-paragraph > li {
+  border-radius: var(--radius-md);
+}
+
+/* Config provider overrides for consistent theme */
+.ant-config-provider {
+  --antd-wave-shadow-color: var(--color-primary-500);
+}
+
+/* Global transition effects */
+.ant-btn,
+.ant-input,
+.ant-select-selector,
+.ant-dropdown-menu-item,
+.ant-menu-item,
+.ant-tabs-tab {
+  transition: all var(--transition-fast);
+}
+
+/* Selection color */
+::selection {
+  background: var(--color-primary-200);
+  color: var(--color-primary-800);
+}
+
+[data-theme="dark"] ::selection {
+  background: rgba(37, 99, 235, 0.3);
+  color: var(--color-primary-200);
+}
+
+/* Focus visible outline */
+:focus-visible {
+  outline: 2px solid var(--color-primary-500);
+  outline-offset: 2px;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Disable smooth scrolling for reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  :root {
+    --color-border-light: #000;
+    --color-border-default: #000;
+    --color-border-dark: #000;
+    --color-text-primary: #000;
+    --color-text-secondary: #333;
+  }
+  
+  [data-theme="dark"] {
+    --color-border-light: #fff;
+    --color-border-default: #fff;
+    --color-border-dark: #fff;
+    --color-text-primary: #fff;
+    --color-text-secondary: #ccc;
+  }
+}
+
+/* Print styles */
+@media print {
+  .ant-layout-sider,
+  .ant-btn,
+  .theme-toggle {
+    display: none !important;
+  }
+  
+  .ant-layout-content {
+    overflow: visible;
+  }
+  
+  body {
+    background: white;
+    color: black;
+  }
 }

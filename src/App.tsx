@@ -1,333 +1,100 @@
-import React, { useState } from 'react';
-import { Layout, Tree, Button, Select, Space, Typography, Tabs, Input, Form, message } from 'antd';
-import {
-  PlusOutlined,
-  FolderOutlined,
-  FileOutlined,
-  DeleteOutlined,
-  EditOutlined,
-  SendOutlined,
-  SaveOutlined,
-} from '@ant-design/icons';
-import type { DataNode } from 'antd/es/tree';
-import Splitter from './components/Splitter';
+import React, { useState, useEffect, useCallback } from 'react';
+import MainLayout from './components/Layout/MainLayout';
+import { ApiRequest, ApiResponse, Collection } from './types';
+import { getSettings, getCollections, addCollection as addCollectionToStorage } from './services/storage';
+import './styles/variables.css';
+import './styles/theme.css';
+import './styles/components.css';
 import './App.css';
 
-const { Header, Content } = Layout;
-const { Title } = Typography;
-const { TextArea } = Input;
-const { Option } = Select;
-
-interface ApiRequest {
-  id: string;
-  name: string;
-  method: string;
-  url: string;
-  headers: Record<string, string>;
-  params: Record<string, string>;
-  body: string;
-  bodyType: 'json' | 'form-data' | 'x-www-form-urlencoded' | 'raw';
+// 临时类型定义，避免类型不匹配问题
+interface TempSettings {
+  theme: string;
+  requestTimeout: number;
+  followRedirects: boolean;
+  encodeUrl: boolean;
+  showNetworkLog: boolean;
 }
 
 const App: React.FC = () => {
-  const [selectedKeys, setSelectedKeys] = useState<React.Key[]>([]);
-  const [workspace, setWorkspace] = useState<string>('default');
-  const [treeData, setTreeData] = useState<DataNode[]>([
-    {
-      title: '示例文件夹',
-      key: 'folder-1',
-      icon: <FolderOutlined />,
-      children: [
-        {
-          title: 'GET 示例请求',
-          key: 'api-1',
-          icon: <FileOutlined />,
-          isLeaf: true,
-        },
-      ],
-    },
-  ]);
-  const [currentRequest, setCurrentRequest] = useState<ApiRequest | null>(null);
-  const [form] = Form.useForm();
+  const [collections, setCollections] = useState<Collection[]>([]);
+  const [selectedRequest, setSelectedRequest] = useState<ApiRequest | null>(null);
+  const [response, setResponse] = useState<ApiResponse | null>(null);
+  const rawSettings = getSettings() as TempSettings;
+  const [isDark, setIsDark] = useState<boolean>(rawSettings.theme === 'dark');
 
-  // 处理树节点选择
-  const onSelect = (selectedKeys: React.Key[]) => {
-    setSelectedKeys(selectedKeys);
-    const selectedKey = selectedKeys[0];
-    if (selectedKey && typeof selectedKey === 'string' && selectedKey.startsWith('api-')) {
-      // 加载请求详情
-      loadRequest(selectedKey);
-    } else {
-      setCurrentRequest(null);
-      form.resetFields();
+  // 加载数据
+  useEffect(() => {
+    loadCollections();
+  }, []);
+
+  // 主题切换
+  const toggleTheme = useCallback(() => {
+    setIsDark(!isDark);
+    // 直接保存到 localStorage 避免类型问题
+    localStorage.setItem('airpost_settings', JSON.stringify({
+      ...rawSettings,
+      theme: !isDark ? 'dark' : 'light',
+    }));
+  }, [isDark, rawSettings]);
+
+  const loadCollections = () => {
+    setCollections(getCollections());
+  };
+
+  // 选择请求
+  const handleSelectRequest = (request: ApiRequest) => {
+    setSelectedRequest(request);
+    setResponse(null);
+  };
+
+  // 请求保存回调
+  const handleRequestSave = (request: ApiRequest) => {
+    // 如果请求属于某个 Collection，更新它
+    if (request.collectionId) {
+      // 重新加载 collections
+      loadCollections();
     }
   };
 
-  // 加载请求详情
-  const loadRequest = (requestId: string) => {
-    // 模拟加载请求数据
-    const mockRequest: ApiRequest = {
-      id: requestId,
-      name: '示例请求',
-      method: 'GET',
-      url: 'https://api.example.com/users',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      params: {},
-      body: '',
-      bodyType: 'json',
+  // 请求响应回调
+  const handleResponse = (resp: ApiResponse) => {
+    setResponse(resp);
+  };
+
+  // 添加新 Collection
+  const handleAddCollection = () => {
+    const name = `New Collection ${collections.length + 1}`;
+    const newCollection: Collection = {
+      id: `collection_${Date.now()}`,
+      name,
+      folders: [],
+      requests: [],
+      createdAt: Date.now(),
+      updatedAt: Date.now(),
     };
-    setCurrentRequest(mockRequest);
-    form.setFieldsValue(mockRequest);
+    addCollectionToStorage(newCollection);
+    loadCollections();
   };
 
-  // 发送请求
-  const handleSendRequest = async () => {
-    try {
-      const values = await form.validateFields();
-      message.loading({ content: '发送请求中...', key: 'sending' });
-      
-      // TODO: 实现实际的请求发送逻辑
-      setTimeout(() => {
-        message.success({ content: '请求发送成功', key: 'sending' });
-      }, 1000);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  // 保存请求
-  const handleSaveRequest = async () => {
-    try {
-      const values = await form.validateFields();
-      message.success('保存成功');
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  // 添加新请求
-  const handleAddRequest = () => {
-    const newRequest: ApiRequest = {
-      id: `api-${Date.now()}`,
-      name: '新请求',
-      method: 'GET',
-      url: '',
-      headers: {},
-      params: {},
-      body: '',
-      bodyType: 'json',
-    };
-    setCurrentRequest(newRequest);
-    form.setFieldsValue(newRequest);
-    setSelectedKeys([newRequest.id]);
-  };
-
-  // 添加新文件夹
-  const handleAddFolder = () => {
-    const newFolder: DataNode = {
-      title: '新文件夹',
-      key: `folder-${Date.now()}`,
-      icon: <FolderOutlined />,
-      children: [],
-    };
-    setTreeData([...treeData, newFolder]);
+  // 刷新请求列表
+  const handleRequestChange = () => {
+    loadCollections();
   };
 
   return (
-    <Layout style={{ minHeight: '100vh' }}>
-      <Header 
-        className="draggable"
-        style={{ 
-          background: '#001529', 
-          padding: '0 24px', 
-          cursor: 'default',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-        }}
-      >
-        <Title 
-          level={4} 
-          style={{ color: '#fff', margin: 0, pointerEvents: 'none' }}
-        >
-          🚀 AirPost
-        </Title>
-        <Space className="no-drag">
-          <Select
-            value={workspace}
-            onChange={setWorkspace}
-            style={{ width: 150 }}
-            size="small"
-          >
-            <Option value="default">默认工作区</Option>
-            <Option value="workspace1">工作区 1</Option>
-            <Option value="workspace2">工作区 2</Option>
-          </Select>
-        </Space>
-      </Header>
-      <Layout style={{ height: 'calc(100vh - 64px)' }}>
-        <Splitter
-          defaultWidth={280}
-          minWidth={200}
-          maxWidth={600}
-          left={
-            <div className="no-drag" style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-              <div style={{ padding: '12px', borderBottom: '1px solid #f0f0f0', flexShrink: 0 }}>
-                <Space>
-                  <Button 
-                    type="text" 
-                    icon={<PlusOutlined />} 
-                    size="small"
-                    onClick={handleAddRequest}
-                  >
-                    新建请求
-                  </Button>
-                  <Button 
-                    type="text" 
-                    icon={<FolderOutlined />} 
-                    size="small"
-                    onClick={handleAddFolder}
-                  >
-                    新建文件夹
-                  </Button>
-                </Space>
-              </div>
-              <div style={{ padding: '8px', overflow: 'auto', flex: 1 }}>
-                <Tree
-                  showIcon
-                  selectedKeys={selectedKeys}
-                  treeData={treeData}
-                  onSelect={onSelect}
-                  blockNode
-                />
-              </div>
-            </div>
-          }
-          right={
-            <Content style={{ background: '#f5f5f5', padding: '24px', height: '100%', overflow: 'auto' }} className="no-drag">
-          {currentRequest ? (
-            <div style={{ background: '#fff', padding: '24px', borderRadius: '4px', height: '100%' }}>
-              <Form form={form} layout="vertical">
-                <Space style={{ marginBottom: '16px', width: '100%', justifyContent: 'space-between' }}>
-                  <Form.Item name="name" style={{ margin: 0, flex: 1 }}>
-                    <Input 
-                      placeholder="请求名称" 
-                      style={{ fontSize: '18px', fontWeight: 'bold' }}
-                    />
-                  </Form.Item>
-                  <Space>
-                    <Button icon={<SaveOutlined />} onClick={handleSaveRequest}>
-                      保存
-                    </Button>
-                    <Button 
-                      type="primary" 
-                      icon={<SendOutlined />} 
-                      onClick={handleSendRequest}
-                    >
-                      发送
-                    </Button>
-                  </Space>
-                </Space>
-
-                <Form.Item name="method" style={{ marginBottom: '16px' }}>
-                  <Select style={{ width: 120 }}>
-                    <Option value="GET">GET</Option>
-                    <Option value="POST">POST</Option>
-                    <Option value="PUT">PUT</Option>
-                    <Option value="DELETE">DELETE</Option>
-                    <Option value="PATCH">PATCH</Option>
-                  </Select>
-                </Form.Item>
-
-                <Form.Item name="url" style={{ marginBottom: '16px' }}>
-                  <Input placeholder="输入请求 URL" />
-                </Form.Item>
-
-                <Tabs
-                  items={[
-                    {
-                      key: 'params',
-                      label: 'Params',
-                      children: (
-                        <div>
-                          <p style={{ color: '#999', marginBottom: '12px' }}>
-                            查询参数将自动添加到 URL
-                          </p>
-                          <Form.Item name="params">
-                            <TextArea 
-                              rows={6} 
-                              placeholder='{"key": "value"}'
-                            />
-                          </Form.Item>
-                        </div>
-                      ),
-                    },
-                    {
-                      key: 'headers',
-                      label: 'Headers',
-                      children: (
-                        <div>
-                          <p style={{ color: '#999', marginBottom: '12px' }}>
-                            请求头信息
-                          </p>
-                          <Form.Item name="headers">
-                            <TextArea 
-                              rows={6} 
-                              placeholder='{"Content-Type": "application/json"}'
-                            />
-                          </Form.Item>
-                        </div>
-                      ),
-                    },
-                    {
-                      key: 'body',
-                      label: 'Body',
-                      children: (
-                        <div>
-                          <Form.Item name="bodyType" style={{ marginBottom: '12px' }}>
-                            <Select style={{ width: 200 }}>
-                              <Option value="json">JSON</Option>
-                              <Option value="form-data">form-data</Option>
-                              <Option value="x-www-form-urlencoded">x-www-form-urlencoded</Option>
-                              <Option value="raw">raw</Option>
-                            </Select>
-                          </Form.Item>
-                          <Form.Item name="body">
-                            <TextArea 
-                              rows={12} 
-                              placeholder="请求体内容"
-                            />
-                          </Form.Item>
-                        </div>
-                      ),
-                    },
-                  ]}
-                />
-              </Form>
-            </div>
-          ) : (
-            <div style={{ 
-              display: 'flex', 
-              alignItems: 'center', 
-              justifyContent: 'center', 
-              height: '100%',
-              color: '#999'
-            }}>
-              <div style={{ textAlign: 'center' }}>
-                <p style={{ fontSize: '16px', marginBottom: '8px' }}>选择一个请求或创建新请求</p>
-                <Button type="primary" icon={<PlusOutlined />} onClick={handleAddRequest}>
-                  新建请求
-                </Button>
-              </div>
-            </div>
-          )}
-            </Content>
-          }
-        />
-      </Layout>
-    </Layout>
+    <MainLayout
+      collections={collections}
+      selectedRequest={selectedRequest}
+      response={response}
+      isDark={isDark}
+      onSelectRequest={handleSelectRequest}
+      onRequestSave={handleRequestSave}
+      onResponse={handleResponse}
+      onAddCollection={handleAddCollection}
+      onRequestChange={handleRequestChange}
+      onToggleTheme={toggleTheme}
+    />
   );
 };
 

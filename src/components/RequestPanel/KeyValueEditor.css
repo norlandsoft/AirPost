@@ -1,0 +1,37 @@
+.key-value-editor {
+  width: 100%;
+}
+
+.key-value-editor-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.key-value-editor-title {
+  font-weight: 500;
+  color: #333;
+}
+
+.key-value-editor-content {
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+  padding: 8px;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.key-value-row {
+  margin-bottom: 8px;
+}
+
+.key-value-row:last-child {
+  margin-bottom: 0;
+}
+
+.key-value-checkbox {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
